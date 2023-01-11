@@ -1,0 +1,46 @@
+name: Do Release
+
+on: workflow_dispatch
+
+jobs:
+  backend-linux-amd64:
+    runs-on: ubuntu-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        name: gregtwallace/legocerthub-backend
+        ref: refs/heads/release
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+    
+    - name: Build
+      run: go build -v ./cmd/api-server
+      env:
+        GOOS: linux
+        GOARCH: amd64
+        CGO_ENABLED: 1
+  
+  backend-windows-amd64:
+    runs-on: windows-latest
+    steps:
+    - name: Checkout
+      uses: actions/checkout@v3
+      with:
+        name: gregtwallace/legocerthub-backend
+        ref: refs/heads/release
+
+    - name: Set up Go
+      uses: actions/setup-go@v3
+      with:
+        go-version: 1.19
+    
+    - name: Build
+      run: go build -v ./cmd/api-server
+      env:
+        GOOS: windows
+        GOARCH: amd64
+        CGO_ENABLED: 1
